@@ -16,8 +16,9 @@ jobs:
 
       - name: Validate PR Checklist
         run: |
-          PR_BODY='${{ github.event.pull_request.body }}'
-          echo "$PR_BODY" > pr_body.txt
+          PR_BODY=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}" \
+            | jq -r '.body')
           
           echo "$PR_BODY" > pr_body.txt
           
@@ -27,7 +28,7 @@ jobs:
             local min_checked="$2"
           
             # Extract section content
-            local section_content=$(awk "/^## ${section_name}$/,/^##/" pr_body.txt)
+            local section_content=$(awk "tolower(\$0) ~ /## ${section_name,,}/,/## [^$]/" pr_body.txt)
           
             # Count checked boxes
             local checked_count=$(echo "$section_content" | grep -c '\- \[x\]')
