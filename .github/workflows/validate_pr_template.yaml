@@ -10,13 +10,12 @@ jobs:
   validate-required-checkboxes:
     runs-on: ubuntu-latest
     steps:
+      # ... existing code ...
       - name: Validate PR checklist sections with github-script
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const core = require('@actions/core');
-
             // Configuration: section headers and minimum checked items required
             const checks = [
               { header: "## Types of changes", minChecked: 1 },
@@ -26,10 +25,10 @@ jobs:
               { header: "## Pipeline", minChecked: 3 },
               { header: "## Deployment labels added", minChecked: 1 },
             ];
-
+            
             // Only count lowercase x as per original pattern "- [x]"
             const checkedBoxRegex = /- \[x\]/g;
-
+            
             // Get the latest PR body from the API (more reliable than context.payload in some events)
             const { data: pr } = await github.rest.pulls.get({
               owner: context.repo.owner,
@@ -37,7 +36,7 @@ jobs:
               pull_number: context.payload.pull_request.number,
             });
             const body = pr.body || "";
-
+            
             // Helper to extract a section body by header until the next header of same/larger level
             function extractSection(markdown, headerText) {
               // Match the exact header line (start of line, optional spaces), then capture until next header (## or #) or end
@@ -49,9 +48,9 @@ jobs:
               const m = markdown.match(headerPattern);
               return m ? m[2] : null;
             }
-
+            
             let failures = [];
-
+            
             for (const { header, minChecked } of checks) {
               const section = extractSection(body, header);
               if (section === null) {
@@ -64,9 +63,10 @@ jobs:
                 failures.push(`Section "${header}": requires at least ${minChecked} checked item(s) matching "- [x]". Found ${count}.`);
               }
             }
-
+            
             if (failures.length) {
               core.setFailed('PR checklist validation failed:\n' + failures.map(f => `- ${f}`).join('\n'));
             } else {
               core.info('All required checklist sections and minimum checked items are satisfied.');
             }
+      # ... existing code ...
