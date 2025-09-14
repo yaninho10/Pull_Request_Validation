@@ -1,4 +1,4 @@
-name: Validate PR Template Checkboxes
+name: Validate PR Checklist
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
     branches: [main]
 
 jobs:
-  validate-required-checkboxes:
+  validate-pull-request-checklist:
     runs-on: ubuntu-latest
     steps:
       - name: Validate PR checklist
@@ -18,7 +18,7 @@ jobs:
             const checks = [
               { header: "## Types of changes", minChecked: 1 },
               { header: "## Details of changes", minChecked: 1 },
-              { header: "## Dev Checklist", minChecked: 5 },
+              { header: "## Dev Checklist", minChecked: 9 },
               { header: "## This Change Needs APIM Update?", minChecked: 1 },
               { header: "## Pipeline", minChecked: 3 },
               { header: "## Deployment labels added", minChecked: 1 },
