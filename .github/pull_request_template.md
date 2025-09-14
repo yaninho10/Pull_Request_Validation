@@ -12,12 +12,12 @@
 ## Types of changes
 <!--- What types of changes does your code-base introduce? Put an `x` in the box that applies: -->
 
-- [ ] major
-- [ ] minor
-- [ ] patch
+- [ ] Major
+- [ ] Minor
+- [ ] Patch
 
 ## Details of changes
-<!--- What types of changes does your code introduce? Put an `x` in all the boxes that apply: -->
+<!--- What Details of changes does your code introduce? Put an `x` in all the boxes that apply: -->
 
 - [ ] Update docs or README
 - [ ] Add a new module

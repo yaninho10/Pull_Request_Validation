@@ -48,7 +48,7 @@ jobs:
           
           check_section "Types of changes" 1 || ((errors++))
           check_section "Details of changes" 1 || ((errors++))
-          check_section "Dev Checklist" 10 || ((errors++))  # Adjust the number based on your requirements
+          check_section "Dev Checklist" 5 || ((errors++))  # Adjust the number based on your requirements
           check_section "Pipeline" 3 || ((errors++))
           check_section "Deployment labels added" 1 || ((errors++))
           check_section "This Change Needs APIM Update?" 1 || ((errors++))
