@@ -1,64 +1,63 @@
-
-name: Validate PR Checklist
+name: Validate PR Template Checkboxes
 
 on:
   pull_request:
     types: [opened, edited, synchronize, reopened]
     branches: [main]
-#    branches: [PreRelease, main, develop, dev, test, test2, stage, prod]
+#    branches: [ PreRelease, main, develop, dev, test, test2, stage, prod ]
 
 jobs:
   validate-required-checkboxes:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Check 'types of changes' checkboxes
+        uses: tim-actions/check-pr-description-checkbox@v1
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          checkboxPattern: "- \\[x\\]"
+          minChecked: 1
+          checkboxSectionHeader: "## Types of changes"
 
-      - name: Validate PR Checklist
-        run: |
-          PR_BODY=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}" \
-            | jq -r '.body')
-          
-          echo "$PR_BODY" > pr_body.txt
-          
-          # Function to check section checkboxes
-          check_section() {
-            local section_name="$1"
-            local min_checked="$2"
-          
-            # Extract section content
-            local section_content=$(awk "tolower(\$0) ~ /## ${section_name,,}/,/## [^$]/" pr_body.txt)
-          
-            # Count checked boxes
-            local checked_count=$(echo "$section_content" | grep -c '\- \[x\]')
-          
-            echo "Section: $section_name, Checked: $checked_count, Required: $min_checked"
-          
-            if [ "$checked_count" -lt "$min_checked" ]; then
-              echo "::error::Section '$section_name' requires at least $min_checked checked item(s), but only $checked_count found."
-              return 1
-            fi
-          
-            return 0
-          }
-          
-          # Check each section
-          errors=0
-          
-          check_section "Types of changes" 1 || ((errors++))
-          check_section "Details of changes" 1 || ((errors++))
-          check_section "Dev Checklist" 5 || ((errors++))  # Adjust the number based on your requirements
-          check_section "Pipeline" 3 || ((errors++))
-          check_section "Deployment labels added" 1 || ((errors++))
-          check_section "This Change Needs APIM Update?" 1 || ((errors++))
-          
-          # If any errors, fail the workflow
-          if [ "$errors" -gt 0 ]; then
-            echo "::error::PR template validation failed. Please check all required sections."
-            exit 1
-          fi
-          
-          echo "PR validation successful!"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Check 'Details of changes' checkboxes
+        uses: tim-actions/check-pr-description-checkbox@v1
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          checkboxPattern: "- \\[x\\]"
+          minChecked: 1
+          checkboxSectionHeader: "## Details of changes"
+
+      - name: Check 'Dev Checklist' checkboxes
+        uses: tim-actions/check-pr-description-checkbox@v1
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          checkboxPattern: "- \\[x\\]"
+          minChecked: 10
+          checkboxSectionHeader: "## Dev Checklist"
+
+      - name: Check 'APIM Update?' checkboxes
+        uses: tim-actions/check-pr-description-checkbox@v1
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          checkboxPattern: "- \\[x\\]"
+          minChecked: 1
+          checkboxSectionHeader: "## This Change Needs APIM Update?"
+
+      - name: Check 'Pipeline' checkboxes
+        uses: tim-actions/check-pr-description-checkbox@v1
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          checkboxPattern: "- \\[x\\]"
+          minChecked: 3
+          checkboxSectionHeader: "## Pipeline"
+
+      - name: Check 'Deployment labels added' checkboxes
+        uses: tim-actions/check-pr-description-checkbox@v1
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          checkboxPattern: "- \\[x\\]"
+          minChecked: 1
+          checkboxSectionHeader: "## Deployment labels added"
+
+
+
+
