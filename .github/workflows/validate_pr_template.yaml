@@ -24,6 +24,15 @@ jobs:
               { header: "## Deployment labels added", minChecked: 1 },
             ];
             
+            // Additional text requirements: ensure author wrote some text in specific sections
+            // minChars: minimal number of non-whitespace characters after stripping comments/checkboxes/markup
+            // disallowPatterns: fail if section includes any placeholder pattern
+            // requirePatterns: optional list of regexes that must be present in the section
+            const textRequirements = [
+              { header: "## Description", minChars: 20, disallowPatterns: [/\(Deployment to:ENV\)/i] },
+              { header: "## Add User Story link", minChars: 10 },
+            ];
+            
             // Only count lowercase x as per original pattern "- [x]"
             const checkedBoxRegex = /- \[x\]/g;
             
@@ -47,8 +56,29 @@ jobs:
               return m ? m[2] : null;
             }
             
+            // Strip comments, checkboxes, and common markdown syntax to get meaningful text
+            function normalizeText(s) {
+              return (s ?? '')
+                // Remove HTML comments
+                .replace(/<!--[\s\S]*?-->/g, '')
+                // Remove checkbox lines entirely
+                .replace(/^\s*-\s*\[[ xX]\].*$/gm, '')
+                // Remove fenced code blocks
+                .replace(/```[\s\S]*?```/g, '')
+                // Remove inline code
+                .replace(/`[^`]*`/g, '')
+                // Remove markdown headings, list markers, bold/italic markers
+                .replace(/^\s*#{1,6}\s+/gm, '')
+                .replace(/^\s*[-*+]\s+/gm, '')
+                .replace(/\*\*?|__?|~~/g, '')
+                // Collapse whitespace
+                .replace(/[ \t]+\n/g, '\n')
+                .trim();
+            }
+            
             let failures = [];
             
+            // Checkbox validations
             for (const { header, minChecked } of checks) {
               const section = extractSection(body, header);
               if (section === null) {
@@ -62,8 +92,35 @@ jobs:
               }
             }
             
+            // Text validations
+            for (const rule of textRequirements) {
+              const section = extractSection(body, rule.header);
+              if (section === null) {
+                failures.push(`Missing section header: "${rule.header}"`);
+                continue;
+              }
+              const text = normalizeText(section);
+              if ((text.replace(/\s+/g, '').length) < (rule.minChars || 1)) {
+                failures.push(`Section "${rule.header}": please add meaningful text (min ${rule.minChars} non-whitespace chars).`);
+              }
+              if (rule.disallowPatterns) {
+                for (const pat of rule.disallowPatterns) {
+                  if (pat.test(section)) {
+                    failures.push(`Section "${rule.header}": remove placeholder text matching ${pat}.`);
+                  }
+                }
+              }
+              if (rule.requirePatterns) {
+                for (const pat of rule.requirePatterns) {
+                  if (!pat.test(section)) {
+                    failures.push(`Section "${rule.header}": must include text matching ${pat}.`);
+                  }
+                }
+              }
+            }
+            
             if (failures.length) {
-              core.setFailed('PR checklist validation failed:\n' + failures.map(f => `- ${f}`).join('\n'));
+              core.setFailed('PR validation failed:\n' + failures.map(f => `- ${f}`).join('\n'));
             } else {
-              core.info('All required checklist sections and minimum checked items are satisfied.');
+              core.info('All required checklist and text sections are satisfied.');
             }
