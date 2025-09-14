@@ -1,0 +1,64 @@
+
+name: Validate PR Checklist
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+    branches: [main]
+#    branches: [PreRelease, main, develop, dev, test, test2, stage, prod]
+
+jobs:
+  validate-required-checkboxes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate PR Checklist
+        run: |
+          PR_BODY=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}" \
+            | jq -r '.body')
+          
+          echo "$PR_BODY" > pr_body.txt
+          
+          # Function to check section checkboxes
+          check_section() {
+            local section_name="$1"
+            local min_checked="$2"
+          
+            # Extract section content
+            local section_content=$(awk "/^## ${section_name}$/,/^##/" pr_body.txt)
+          
+            # Count checked boxes
+            local checked_count=$(echo "$section_content" | grep -c '\- \[x\]')
+          
+            echo "Section: $section_name, Checked: $checked_count, Required: $min_checked"
+          
+            if [ "$checked_count" -lt "$min_checked" ]; then
+              echo "::error::Section '$section_name' requires at least $min_checked checked item(s), but only $checked_count found."
+              return 1
+            fi
+          
+            return 0
+          }
+          
+          # Check each section
+          errors=0
+          
+          check_section "Types of changes" 1 || ((errors++))
+          check_section "Details of changes" 1 || ((errors++))
+          check_section "Dev Checklist" 10 || ((errors++))  # Adjust the number based on your requirements
+          check_section "Pipeline" 3 || ((errors++))
+          check_section "Deployment labels added" 1 || ((errors++))
+          check_section "This Change Needs APIM Update?" 1 || ((errors++))
+          
+          # If any errors, fail the workflow
+          if [ "$errors" -gt 0 ]; then
+            echo "::error::PR template validation failed. Please check all required sections."
+            exit 1
+          fi
+          
+          echo "PR validation successful!"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
