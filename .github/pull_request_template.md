@@ -6,14 +6,14 @@
 
 
 ## Types of changes
-<!--- What types of changes does your code-base introduce? Put an `x` in the box that applies: -->
+<!--- What types of changes does your code-base introduce? Put an `x` in the box that applies and remove any withe spaces in brackets: -->
 
 - [ ] Major
 - [ ] Minor
 - [ ] Patch
 
 ## Details of changes
-<!--- What Details of changes does your code introduce? Put an `x` in all the boxes that apply: -->
+<!--- What Details of changes does your code introduce? Put an `x` in all the boxes that apply and remove any withe spaces in brackets: -->
 
 - [ ] Update docs or README
 - [ ] Add a new module
@@ -32,7 +32,7 @@
 - [ ] Change tests
 
 ## Dev Checklist
-<!-- scope of testing Put an `x` in all the boxes that apply: -->
+<!-- scope of testing Put an `x` in all the boxes that apply and remove any withe spaces in brackets: -->
 
 - [ ] My change is documented
 - [ ] My change has testable features
@@ -49,7 +49,7 @@
 - [ ] I have checked my code and corrected any misspellings
 
 ## This Change Needs APIM Update?
-<!--- Is this change needs an api update? Put an `x` in the box that applies: -->
+<!--- Is this change needs an api update? Put an `x` in the box that applies and remove any withe spaces in brackets: -->
 
 - [ ] Yes
 - [ ] No
@@ -73,7 +73,7 @@
 
 
 ## Deployment labels added
-<!--- Are deployment labels added to this PR? Put an `x` in the box that applies: -->
+<!--- Are deployment labels added to this PR? Put an `x` in the box that applies and remove any withe spaces in brackets: -->
 
 - [ ] Yes
 - [ ] No
