@@ -6,7 +6,7 @@ on:
     branches: [main]
 
 jobs:
-  validate-required-checkboxes:
+  validate-pull-request-checklist:
     runs-on: ubuntu-latest
     steps:
       - name: Validate PR checklist
