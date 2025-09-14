@@ -3,61 +3,70 @@ name: Validate PR Template Checkboxes
 on:
   pull_request:
     types: [opened, edited, synchronize, reopened]
-    branches: [main]
+    branches: [PRChekList]
 #    branches: [ PreRelease, main, develop, dev, test, test2, stage, prod ]
 
 jobs:
   validate-required-checkboxes:
     runs-on: ubuntu-latest
     steps:
-      - name: Check 'types of changes' checkboxes
-        uses: tim-actions/check-pr-description-checkbox@v1
+      - name: Validate PR checklist sections with github-script
+        uses: actions/github-script@v7
         with:
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          checkboxPattern: "- \\[x\\]"
-          minChecked: 1
-          checkboxSectionHeader: "## Types of changes"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const core = require('@actions/core');
 
-      - name: Check 'Details of changes' checkboxes
-        uses: tim-actions/check-pr-description-checkbox@v1
-        with:
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          checkboxPattern: "- \\[x\\]"
-          minChecked: 1
-          checkboxSectionHeader: "## Details of changes"
+            // Configuration: section headers and minimum checked items required
+            const checks = [
+              { header: "## Types of changes", minChecked: 1 },
+              { header: "## Details of changes", minChecked: 1 },
+              { header: "## Dev Checklist", minChecked: 10 },
+              { header: "## This Change Needs APIM Update?", minChecked: 1 },
+              { header: "## Pipeline", minChecked: 3 },
+              { header: "## Deployment labels added", minChecked: 1 },
+            ];
 
-      - name: Check 'Dev Checklist' checkboxes
-        uses: tim-actions/check-pr-description-checkbox@v1
-        with:
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          checkboxPattern: "- \\[x\\]"
-          minChecked: 10
-          checkboxSectionHeader: "## Dev Checklist"
+            // Only count lowercase x as per original pattern "- [x]"
+            const checkedBoxRegex = /- \[x\]/g;
 
-      - name: Check 'APIM Update?' checkboxes
-        uses: tim-actions/check-pr-description-checkbox@v1
-        with:
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          checkboxPattern: "- \\[x\\]"
-          minChecked: 1
-          checkboxSectionHeader: "## This Change Needs APIM Update?"
+            // Get the latest PR body from the API (more reliable than context.payload in some events)
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+            });
+            const body = pr.body || "";
 
-      - name: Check 'Pipeline' checkboxes
-        uses: tim-actions/check-pr-description-checkbox@v1
-        with:
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          checkboxPattern: "- \\[x\\]"
-          minChecked: 3
-          checkboxSectionHeader: "## Pipeline"
+            // Helper to extract a section body by header until the next header of same/larger level
+            function extractSection(markdown, headerText) {
+              // Match the exact header line (start of line, optional spaces), then capture until next header (## or #) or end
+              const headerPattern = new RegExp(
+                String.raw`(^|\n)\s*${headerText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\s*\n` +
+                String.raw`([\s\S]*?)(?=\n\s*#{1,6}\s|$)`,
+                'i'
+              );
+              const m = markdown.match(headerPattern);
+              return m ? m[2] : null;
+            }
 
-      - name: Check 'Deployment labels added' checkboxes
-        uses: tim-actions/check-pr-description-checkbox@v1
-        with:
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          checkboxPattern: "- \\[x\\]"
-          minChecked: 1
-          checkboxSectionHeader: "## Deployment labels added"
+            let failures = [];
 
+            for (const { header, minChecked } of checks) {
+              const section = extractSection(body, header);
+              if (section === null) {
+                failures.push(`Missing section header: "${header}"`);
+                continue;
+              }
+              const matches = section.match(checkedBoxRegex);
+              const count = matches ? matches.length : 0;
+              if (count < minChecked) {
+                failures.push(`Section "${header}": requires at least ${minChecked} checked item(s) matching "- [x]". Found ${count}.`);
+              }
+            }
 
-
-
+            if (failures.length) {
+              core.setFailed('PR checklist validation failed:\n' + failures.map(f => `- ${f}`).join('\n'));
+            } else {
+              core.info('All required checklist sections and minimum checked items are satisfied.');
+            }
