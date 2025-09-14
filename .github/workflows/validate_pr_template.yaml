@@ -3,7 +3,7 @@ name: Validate PR Template Checkboxes
 on:
   pull_request:
     types: [opened, edited, synchronize, reopened]
-    branches: [PRChekList]
+    branches: [main]
 #    branches: [ PreRelease, main, develop, dev, test, test2, stage, prod ]
 
 jobs:
