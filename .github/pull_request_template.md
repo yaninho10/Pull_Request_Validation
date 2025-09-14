@@ -31,7 +31,7 @@
 - [ ] Add test cases
 - [ ] Modify test cases
 - [ ] Remove test cases
-- [ ] Fix tests code
+- [ ] Fix test cases
 - [ ] Security code change
 - [ ] Change tests
 
