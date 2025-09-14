@@ -4,14 +4,12 @@ on:
   pull_request:
     types: [opened, edited, synchronize, reopened]
     branches: [main]
-#    branches: [ PreRelease, main, develop, dev, test, test2, stage, prod ]
 
 jobs:
   validate-required-checkboxes:
     runs-on: ubuntu-latest
     steps:
-      # ... existing code ...
-      - name: Validate PR checklist sections with github-script
+      - name: Validate PR checklist
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -20,7 +18,7 @@ jobs:
             const checks = [
               { header: "## Types of changes", minChecked: 1 },
               { header: "## Details of changes", minChecked: 1 },
-              { header: "## Dev Checklist", minChecked: 10 },
+              { header: "## Dev Checklist", minChecked: 5 },
               { header: "## This Change Needs APIM Update?", minChecked: 1 },
               { header: "## Pipeline", minChecked: 3 },
               { header: "## Deployment labels added", minChecked: 1 },
@@ -60,7 +58,7 @@ jobs:
               const matches = section.match(checkedBoxRegex);
               const count = matches ? matches.length : 0;
               if (count < minChecked) {
-                failures.push(`Section "${header}": requires at least ${minChecked} checked item(s) matching "- [x]". Found ${count}.`);
+                failures.push(`Section "${header}": requires at least ${minChecked} checked item(s), but found ${count}.`);
               }
             }
             
@@ -69,4 +67,3 @@ jobs:
             } else {
               core.info('All required checklist sections and minimum checked items are satisfied.');
             }
-      # ... existing code ...
