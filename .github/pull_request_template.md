@@ -78,16 +78,16 @@ Attach images below (required): This can include: Test Coverage, Backend build o
 <!-- Mention details of deployment, Env(Dev, Test, Test2, Stage, Production), Location(East, West) -->
 <!-- Mention id it's individual deployment to any Env(Dev, Test, Test2, Stage), independent of regular deployment cycle Put an `x` in the box if apply: -->
 <!-- if there isn't an issue that this pull request is addressing, just leave the below blank -->
-#### Deployment to:ENV
+(Deployment to:ENV)
 - [ ] Dev
 - [ ] Production
 
-#### Deployment From:ENV
+(Deployment From:ENV)
 - [ ] Dev
 - [ ] Stage
 - [ ] Production
 
-#### Deployment Location
+(Deployment Location)
 - [ ] EastUs
 - [ ] WestUs
 
