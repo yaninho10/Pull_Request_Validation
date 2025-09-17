@@ -32,6 +32,12 @@ jobs:
               { header: "## Description", minChars: 20, disallowPatterns: [/\(Deployment to:ENV\)/i] },
               { header: "## Add User Story link", minChars: 10 },
             ];
+
+            // Require at least one image in these sections
+            const imageRequiredSections = [
+              { header: "## Screenshots before your changes" },
+              { header: "## Screenshots of changes After" },
+            ];
             
             // Only count lowercase x as per original pattern "- [x]"
             const checkedBoxRegex = /- \[x\]/g;
@@ -74,6 +80,14 @@ jobs:
                 // Collapse whitespace
                 .replace(/[ \t]+\n/g, '\n')
                 .trim();
+            }
+
+            // Detect at least one image (Markdown or HTML) in a section
+            function hasImage(sectionContent) {
+              if (!sectionContent) return false;
+              const mdImage = /!\[[^\]]*\]\((?:\s*<?)([^)>\s]+)(?:>?)\)/i; // ![alt](url)
+              const htmlImg = /<img\s+[^>]*src=["'][^"']+["'][^>]*>/i;      // <img src="...">
+              return mdImage.test(sectionContent) || htmlImg.test(sectionContent);
             }
             
             let failures = [];
@@ -118,9 +132,21 @@ jobs:
                 }
               }
             }
+
+            // Image validations
+            for (const { header } of imageRequiredSections) {
+              const section = extractSection(body, header);
+              if (section === null) {
+                failures.push(`Missing section header: "${header}"`);
+                continue;
+              }
+              if (!hasImage(section)) {
+                failures.push(`Section "${header}": must include at least one image (Markdown ![...](url) or <img src="...">).`);
+              }
+            }
             
             if (failures.length) {
               core.setFailed('PR validation failed:\n' + failures.map(f => `- ${f}`).join('\n'));
             } else {
-              core.info('All required checklist and text sections are satisfied.');
+              core.info('All required checklist, text, and screenshot sections are satisfied.');
             }
