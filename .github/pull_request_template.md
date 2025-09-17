@@ -48,6 +48,26 @@
 - [ ] Any dependent changes have been merged and published in downstream modules
 - [ ] I have checked my code and corrected any misspellings
 
+
+## Screenshots before your changes
+Attach images below (required): This can include: Test Coverage, Backend build or frontend.
+<!-- Please provide screenshots before your changes if applicable -->
+<!-- You can drag-and-drop images into this area in most Git providers, or paste from clipboard. -->
+
+
+
+
+
+## Screenshots of changes After
+Attach images below (required): This can include: Test Coverage, Backend build or frontend.
+<!-- Please provide screenshots of your changes if applicable -->
+<!-- You can drag-and-drop images into this area in most Git providers, or paste from clipboard. -->
+
+
+
+
+
+
 ## This Change Needs APIM Update?
 <!--- Is this change needs an api update? Put an `x` in the box that applies and remove any withe spaces in brackets: -->
 
@@ -58,16 +78,16 @@
 <!-- Mention details of deployment, Env(Dev, Test, Test2, Stage, Production), Location(East, West) -->
 <!-- Mention id it's individual deployment to any Env(Dev, Test, Test2, Stage), independent of regular deployment cycle Put an `x` in the box if apply: -->
 <!-- if there isn't an issue that this pull request is addressing, just leave the below blank -->
-(Deployment to:ENV)
+#### Deployment to:ENV
 - [ ] Dev
 - [ ] Production
 
-(Deployment From:ENV)
+#### Deployment From:ENV
 - [ ] Dev
 - [ ] Stage
 - [ ] Production
 
-(Deployment to:Location)
+#### Deployment Location
 - [ ] EastUs
 - [ ] WestUs
 
@@ -78,5 +98,6 @@
 - [ ] Yes
 - [ ] No
 
+##
 <!-- Finally Remember to pickup the Cherwell ticket id  -->
-Remember to pick up the Cherwell ticket id in-case of prod deployment from cherwell action on runs: 
+Note: Remember to pick up the Cherwell ticket id in-case of prod deployment from cherwell action on runs:
