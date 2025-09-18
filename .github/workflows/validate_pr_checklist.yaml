@@ -16,11 +16,7 @@ jobs:
           script: |
             // Configuration: section headers and minimum checked items required
             const checks = [
-              { header: "## Types of changes", minChecked: 1 },
-              { header: "## Details of changes", minChecked: 1 },
-              { header: "## Dev Checklist", minChecked: 8 },
-              { header: "## This Change Needs APIM Update?", minChecked: 1 },
-              { header: "## Pipeline", minChecked: 3 },
+              { header: "## Dev Checklist", minChecked: 7 },
               { header: "## Deployment labels added", minChecked: 1 },
             ];
             
@@ -30,13 +26,13 @@ jobs:
             // requirePatterns: optional list of regexes that must be present in the section
             const textRequirements = [
               { header: "## Description", minChars: 20, disallowPatterns: [/\(Deployment to:ENV\)/i] },
-              { header: "## Add User Story link", minChars: 10 },
+              { header: "## User Story link", minChars: 10 },
             ];
 
             // Require at least one image in these sections
             const imageRequiredSections = [
-              { header: "## Screenshots before your changes" },
-              { header: "## Screenshots of changes After" },
+              { header: "### 1. Unit test coverage result *" },
+              { header: "### 2. Vulnerability result *" },
             ];
             
             // Only count lowercase x as per original pattern "- [x]"

@@ -1,102 +1,57 @@
-## Description
+# Develop checklist
+Please ensure that all the required fields (*) are completed for this PR.
+
+## Description *
 <!--- Describe your changes in detail -->
 
-## Add User Story link
+## User Story link *
 <!--- Please provide the ADO User Story link (Note: not the US number) here.  -->
 
 
-## Types of changes
-<!--- What types of changes does your code-base introduce? Put an `x` in the box that applies and remove any withe spaces in brackets: -->
+## Dev Checklist * 
+<!-- scope of testing Put an `x` in all the boxes as all are required and remove any withe spaces in brackets: -->
 
-- [ ] Major
-- [ ] Minor
-- [ ] Patch
-
-## Details of changes
-<!--- What Details of changes does your code introduce? Put an `x` in all the boxes that apply and remove any withe spaces in brackets: -->
-
-- [ ] Update docs or README
-- [ ] Add a new module
-- [ ] Add new API/API's
-- [ ] Update an existing API/API's
-- [ ] Fix an API/API's
-- [ ] Add a new functionality/feature
-- [ ] Update functionality/feature
-- [ ] Fix functionality/feature
-- [ ] Change an existing code/files
-- [ ] Add test cases
-- [ ] Modify test cases
-- [ ] Remove test cases
-- [ ] Fix test cases
-- [ ] Security code change
-- [ ] Change tests
-
-## Dev Checklist
-<!-- scope of testing Put an `x` in all the boxes that apply and remove any withe spaces in brackets: -->
-
-- [ ] My change is documented
-- [ ] My change has testable features
+- [ ] My change is documented in the README
 - [ ] Local test working
 - [ ] My code follows the style guidelines of this project.
-- [ ] I have performed a self-review of my own code
 - [ ] I have commented on my code, particularly in hard-to-understand areas
-- [ ] I have made corresponding changes to the documentation (if applicable)
-- [ ] My changes generate no new warnings
-- [ ] I have added tests that prove my fix is effective or that my feature works
-- [ ] New and existing unit tests pass locally with my changes
-- [ ] Tests cases are working and met a threshold of 85% minimal coverage
-- [ ] Any dependent changes have been merged and published in downstream modules
-- [ ] I have checked my code and corrected any misspellings
-
-
-## Screenshots before your changes
-Attach images below (required): This can include: Test Coverage, Backend build or frontend.
-<!-- Please provide screenshots before your changes if applicable -->
-<!-- You can drag-and-drop images into this area in most Git providers, or paste from clipboard. -->
+- [ ] I have ensure that exception handling for negative scenarios are addressed
+- [ ] I have ensure that there are not critical and high vulnerabilities showing-up in the application
+- [ ] Unit Tests cases are added/updated and met a threshold of 85% minimal coverage
 
 
 
 
 
-## Screenshots of changes After
-Attach images below (required): This can include: Test Coverage, Backend build or frontend.
+## Screenshots of changes
+Attach images in the sections below.
 <!-- Please provide screenshots of your changes if applicable -->
 <!-- You can drag-and-drop images into this area in most Git providers, or paste from clipboard. -->
 
+### 1. Unit test coverage result *
+
+
+###
+### 2. Vulnerability result *
+
+
+###
+### 3. More informative screenshots (optional)
 
 
 
-
-
-## This Change Needs APIM Update?
-<!--- Is this change needs an api update? Put an `x` in the box that applies and remove any withe spaces in brackets: -->
-
-- [ ] Yes
-- [ ] No
-  
-## Pipeline
-<!-- Mention details of deployment, Env(Dev, Test, Test2, Stage, Production), Location(East, West) -->
-<!-- Mention id it's individual deployment to any Env(Dev, Test, Test2, Stage), independent of regular deployment cycle Put an `x` in the box if apply: -->
-<!-- if there isn't an issue that this pull request is addressing, just leave the below blank -->
-(Deployment to:ENV)
-- [ ] Dev
-- [ ] Production
-
-(Deployment From:ENV)
-- [ ] Dev
-- [ ] Stage
-- [ ] Production
-
-(Deployment Location)
-- [ ] EastUs
-- [ ] WestUs
-
-
-## Deployment labels added
+###
+## Deployment labels added *
 <!--- Are deployment labels added to this PR? Put an `x` in the box that applies and remove any withe spaces in brackets: -->
 
 - [ ] Yes
 - [ ] No
+
+
+##
+## Optional Checklist
+This section will include a list of optional tasks that was performed if applicable.
+
 
 ##
 <!-- Finally Remember to pickup the Cherwell ticket id  -->
