@@ -16,8 +16,8 @@ jobs:
           script: |
             // Configuration: section headers and minimum checked items required
             const checks = [
-              { header: "## Dev Checklist", minChecked: 7 },
-              { header: "## Deployment labels added", minChecked: 1 },
+              { header: "Dev Checklist *", minChecked: 7 },
+              { header: "## Deployment labels added *", minChecked: 1 },
             ];
             
             // Additional text requirements: ensure author wrote some text in specific sections
@@ -25,8 +25,8 @@ jobs:
             // disallowPatterns: fail if section includes any placeholder pattern
             // requirePatterns: optional list of regexes that must be present in the section
             const textRequirements = [
-              { header: "## Description", minChars: 20, disallowPatterns: [/\(Deployment to:ENV\)/i] },
-              { header: "## User Story link", minChars: 10 },
+              { header: "## Description *", minChars: 20, disallowPatterns: [/\(Deployment to:ENV\)/i] },
+              { header: "## User Story link *", minChars: 10 },
             ];
 
             // Require at least one image in these sections
