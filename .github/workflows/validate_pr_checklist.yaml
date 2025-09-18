@@ -16,7 +16,7 @@ jobs:
           script: |
             // Configuration: section headers and minimum checked items required
             const checks = [
-              { header: "Dev Checklist *", minChecked: 7 },
+              { header: "## Dev Checklist *", minChecked: 7 },
               { header: "## Deployment labels added *", minChecked: 1 },
             ];
             
