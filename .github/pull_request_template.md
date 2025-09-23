@@ -15,9 +15,9 @@ Please ensure that all the required fields (*) are completed for this PR.
 - [ ] Local test working
 - [ ] My code follows the style guidelines of this project.
 - [ ] I have commented on my code, particularly in hard-to-understand areas
-- [ ] I have ensure that exception handling for negative scenarios are addressed
-- [ ] I have ensure that there are not critical and high vulnerabilities showing-up in the application
-- [ ] Unit Tests cases are added/updated and met a threshold of 85% minimal coverage
+- [ ] I have ensured that exception handling for negative scenarios are addressed
+- [ ] I have ensured that there are not critical and high vulnerabilities showing-up in the application
+- [ ] Unit Test cases are added/updated and met a threshold of 85% minimal coverage
 
 
 
@@ -54,5 +54,5 @@ This section will include a list of optional tasks that was performed if applica
 
 
 ##
-<!-- Finally Remember to pickup the Cherwell ticket id  -->
-Note: Remember to pick up the Cherwell ticket id in-case of prod deployment from cherwell action on runs:
+<!-- Finally, Remember to pick up the Cherwell ticket id  -->
+Note: Remember to pick up the Cherwell ticket id in case of prod deployment from cherwell action on runs:
