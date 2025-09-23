@@ -54,5 +54,5 @@ This section will include a list of optional tasks that was performed if applica
 
 
 ##
-<!-- Finally Remember to pickup the Cherwell ticket id  -->
-Note: Remember to pick up the Cherwell ticket id in-case of prod deployment from cherwell action on runs:
+<!-- Finally, Remember to pick up the Cherwell ticket id  -->
+Note: Remember to pick up the Cherwell ticket id in case of prod deployment from cherwell action on runs:
